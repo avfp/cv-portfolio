@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Name — CV & Portfolio</title>
+
+<!--
+  ============================================================
+  HOW TO CUSTOMIZE THIS TEMPLATE
+  ============================================================
+  1. Search this file for "EDIT:" comments — they mark every
+     spot meant to be replaced with your own information.
+  2. Your CV content lives inside <section id="cv">.
+  3. Your portfolio projects live in the `projects` array
+     near the bottom of the <script> tag. Add, remove, or
+     edit objects there — tags, search, and filters update
+     automatically, no other code needs to change.
+  4. Each project's thumbnail is a generated placeholder.
+     To use a real image instead, replace the <div class="art">
+     element for that project with <img src="your-image.jpg">.
+  ============================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  /* ===================== TOKENS ===================== */
+  :root{
+    --bg:        #F5F6F0;
+    --surface:   #FFFFFF;
+    --sage-50:   #EDF0E5;
+    --sage-200:  #D6DEC6;
+    --sage-400:  #A6B493;
+    --sage-600:  #6E7F5C;
+    --sage-900:  #2B3424;
+    --ink:       #232820;
+    --ink-soft:  #5C6452;
+    --gold:      #B08D4F;
+    --line:      rgba(43,52,36,0.15);
+    --radius:    3px;
+    --serif:     'Fraunces', serif;
+    --sans:      'Inter', sans-serif;
+    --mono:      'IBM Plex Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img{ max-width:100%; display:block; }
+  a{ color: var(--sage-900); }
+  ::selection{ background: var(--sage-200); }
+  :focus-visible{ outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  .wrap{ max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+
+  /* ===================== TOP NAV ===================== */
+  .topnav{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(245,246,240,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topnav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height: 68px;
+  }
+  .brand{
+    font-family: var(--serif); font-style: italic; font-weight: 500;
+    font-size: 1.25rem; color: var(--sage-900); text-decoration:none;
+    letter-spacing: 0.01em;
+  }
+  .tabs{ display:flex; gap: 4px; background: var(--sage-50); padding:4px; border-radius: 999px; }
+  .tab-btn{
+    font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 8px 18px; border-radius: 999px; border:none; background: transparent;
+    color: var(--ink-soft); cursor:pointer; transition: background .2s, color .2s;
+  }
+  .tab-btn[aria-selected="true"]{ background: var(--sage-900); color: var(--surface); }
+  .tab-btn:hover:not([aria-selected="true"]){ background: var(--sage-200); }
+
+  section[data-page]{ display:none; }
+  section[data-page].is-active{ display:block; animation: fadein .35s ease; }
+  @media (prefers-reduced-motion: reduce){ section[data-page].is-active{ animation:none; } }
+  @keyframes fadein{ from{ opacity:0; transform: translateY(6px); } to{ opacity:1; transform:none; } }
+
+  /* ===================== CV PAGE ===================== */
+  .cv-header{ padding: 72px 0 48px; border-bottom: 1px solid var(--line); }
+  .cv-header .role{
+    font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--sage-600); margin: 0 0 10px;
+  }
+  .cv-header h1{
+    font-family: var(--serif); font-weight: 500; font-size: clamp(2.4rem, 6vw, 4rem);
+    margin: 0 0 18px; color: var(--sage-900); line-height: 1.05;
+  }
+  .cv-header p.summary{ max-width: 620px; color: var(--ink-soft); font-size: 1.05rem; margin: 0 0 22px; }
+  .contact-row{ display:flex; flex-wrap:wrap; gap: 14px; font-family: var(--mono); font-size: 0.85rem; }
+  .contact-row a{ color: var(--ink); text-decoration:none; border-bottom: 1px solid var(--sage-400); }
+  .contact-row a:hover{ border-color: var(--gold); color: var(--gold); }
+  .contact-row span.sep{ color: var(--sage-400); }
+
+  .cv-body{ display:grid; grid-template-columns: 1fr 280px; gap: 64px; padding: 56px 0 100px; align-items:start; }
+  @media (max-width: 760px){ .cv-body{ grid-template-columns: 1fr; gap: 48px; } }
+
+  .cv-block + .cv-block{ margin-top: 48px; }
+  .cv-block h2{
+    font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--sage-600); margin: 0 0 24px; display:flex; align-items:center; gap: 12px;
+  }
+  .cv-block h2::after{ content:""; flex:1; height:1px; background: var(--line); }
+
+  .timeline{ position:relative; padding-left: 26px; border-left: 1px solid var(--line); }
+  .tl-item{ position: relative; padding-bottom: 32px; }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{
+    content:""; position:absolute; left: -31px; top: 4px;
+    width: 9px; height:9px; border-radius:50%; background: var(--surface);
+    border: 2px solid var(--sage-600);
+  }
+  .tl-date{ font-family: var(--mono); font-size: 0.78rem; color: var(--sage-600); margin:0 0 4px; }
+  .tl-title{ font-family: var(--serif); font-weight: 500; font-size: 1.15rem; margin: 0 0 2px; color: var(--ink); }
+  .tl-org{ font-size: 0.92rem; color: var(--ink-soft); margin: 0 0 8px; }
+  .tl-desc{ font-size: 0.95rem; color: var(--ink-soft); margin:0; max-width: 560px; }
+
+  .skill-group{ margin-bottom: 22px; }
+  .skill-group h3{ font-size: 0.78rem; color: var(--ink-soft); margin: 0 0 10px; font-weight: 600; }
+  .pill-row{ display:flex; flex-wrap:wrap; gap: 8px; }
+  .pill{
+    font-family: var(--mono); font-size: 0.76rem; padding: 5px 11px;
+    background: var(--sage-50); border: 1px solid var(--sage-200); border-radius: 999px; color: var(--sage-900);
+  }
+  .side-cta{
+    margin-top: 36px; display:inline-block; font-family: var(--mono); font-size: 0.78rem;
+    letter-spacing: 0.05em; text-transform: uppercase; color: var(--surface); background: var(--sage-900);
+    padding: 12px 20px; border-radius: var(--radius); text-decoration:none; transition: background .2s;
+  }
+  .side-cta:hover{ background: var(--gold); }
+
+  /* ===================== PORTFOLIO PAGE ===================== */
+  .pf-header{ padding: 72px 0 32px; }
+  .pf-header .role{
+    font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--sage-600); margin:0 0 10px;
+  }
+  .pf-header h1{
+    font-family: var(--serif); font-weight: 500; font-size: clamp(2.2rem, 5vw, 3.2rem);
+    color: var(--sage-900); margin: 0 0 14px;
+  }
+  .pf-header p{ color: var(--ink-soft); max-width: 560px; margin:0; }
+
+  .controls{
+    position: sticky; top: 68px; z-index: 40; background: var(--bg);
+    padding: 20px 0; border-bottom: 1px solid var(--line);
+    display:flex; flex-wrap:wrap; gap: 16px; align-items:center; justify-content:space-between;
+  }
+  .search-box{ position:relative; flex: 1 1 260px; max-width: 360px; }
+  .search-box input{
+    width:100%; padding: 10px 14px 10px 36px; border: 1px solid var(--sage-200); border-radius: var(--radius);
+    background: var(--surface); font-family: var(--sans); font-size: 0.92rem; color: var(--ink);
+  }
+  .search-box input::placeholder{ color: var(--ink-soft); }
+  .search-box svg{ position:absolute; left:11px; top:50%; transform: translateY(-50%); opacity:.55; }
+
+  .tag-filters{ display:flex; flex-wrap:wrap; gap:8px; flex: 2 1 320px; }
+  .chip{
+    font-family: var(--mono); font-size: 0.76rem; padding: 7px 13px; border-radius: 999px;
+    border: 1px solid var(--sage-200); background: var(--surface); color: var(--ink-soft); cursor:pointer;
+    transition: all .15s;
+  }
+  .chip:hover{ border-color: var(--sage-600); }
+  .chip[aria-pressed="true"]{ background: var(--sage-900); border-color: var(--sage-900); color: var(--surface); }
+  .chip.all[aria-pressed="true"]{ background: var(--gold); border-color: var(--gold); }
+
+  .view-toggle{ display:flex; border: 1px solid var(--sage-200); border-radius: var(--radius); overflow:hidden; flex: 0 0 auto; }
+  .view-toggle button{
+    border:none; background: var(--surface); padding: 9px 14px; cursor:pointer; color: var(--ink-soft);
+    display:flex; align-items:center; gap:6px; font-family: var(--mono); font-size: 0.76rem;
+  }
+  .view-toggle button + button{ border-left: 1px solid var(--sage-200); }
+  .view-toggle button[aria-pressed="true"]{ background: var(--sage-900); color: var(--surface); }
+
+  .pieces{ padding: 40px 0 100px; }
+  .pieces.view-gallery{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 32px 28px; }
+  @media (max-width: 900px){ .pieces.view-gallery{ grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px){ .pieces.view-gallery{ grid-template-columns: 1fr; } }
+
+  .piece{ display:flex; flex-direction:column; }
+  .pieces.view-gallery .piece .art{ aspect-ratio: 4/3; margin-bottom: 14px; }
+  .pieces.view-gallery .piece .piece-desc{
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+  }
+
+  .pieces.view-list{ display:flex; flex-direction:column; }
+  .pieces.view-list .piece{
+    flex-direction:row; gap: 24px; padding: 26px 0; border-bottom: 1px solid var(--line); align-items:flex-start;
+  }
+  .pieces.view-list .piece .art{ width: 120px; height: 90px; flex: 0 0 auto; margin-bottom:0; }
+  @media (max-width: 560px){ .pieces.view-list .piece{ flex-direction:column; } .pieces.view-list .piece .art{ width:100%; height:140px; } }
+
+  .art{
+    position:relative; border: 1px solid var(--sage-900); padding: 6px; background: var(--surface); border-radius: var(--radius);
+  }
+  .art::before{
+    content:""; position:absolute; inset:6px;
+    background: linear-gradient(135deg, var(--c1,#A6B493), var(--c2,#D6DEC6));
+  }
+  .art-mark{
+    position:absolute; inset:6px; display:flex; align-items:center; justify-content:center;
+    font-family: var(--serif); font-style:italic; font-weight: 500; font-size: 2.6rem; color: rgba(255,255,255,0.85);
+  }
+
+  .placard-no{ font-family: var(--mono); font-size: 0.7rem; color: var(--gold); letter-spacing: 0.08em; margin: 0 0 4px; }
+  .piece-title{ font-family: var(--serif); font-weight: 500; font-size: 1.2rem; margin: 0 0 6px; color: var(--ink); }
+  .piece-title .piece-date{ font-family: var(--mono); font-weight: 400; font-size: 0.85rem; color: var(--ink-soft); }
+  .piece-desc{ font-size: 0.92rem; color: var(--ink-soft); margin: 0 0 12px; max-width: 480px; }
+  .piece-tags{ list-style:none; display:flex; flex-wrap:wrap; gap:6px; margin:0; padding:0; }
+  .piece-tags li{
+    font-family: var(--mono); font-size: 0.7rem; padding: 3px 9px; background: var(--sage-50);
+    border: 1px solid var(--sage-200); border-radius: 999px; color: var(--sage-900);
+  }
+
+  .empty-state{ padding: 80px 0; text-align:center; color: var(--ink-soft); font-family: var(--mono); font-size: 0.9rem; }
+
+  footer{ border-top: 1px solid var(--line); padding: 28px 0; }
+  footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-family: var(--mono); font-size: 0.75rem; color: var(--ink-soft); }
+
+  /* Print: only show CV, strip chrome for paper output */
+  @media print{
+    .topnav, footer, section[data-page="portfolio"]{ display:none !important; }
+    section[data-page="cv"]{ display:block !important; }
+    body{ background:#fff; }
+    .cv-body{ grid-template-columns: 1fr 240px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="wrap">
+    <!-- EDIT: your initials or a small logotype -->
+    <a href="#cv" class="brand">A. Bloom</a>
+    <div class="tabs" role="tablist" aria-label="Site sections">
+      <button class="tab-btn" id="navCv" role="tab" aria-selected="true" data-page="cv">CV</button>
+      <button class="tab-btn" id="navPortfolio" role="tab" aria-selected="false" data-page="portfolio">Portfolio</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <!-- ===================== CV PAGE ===================== -->
+  <section id="cv" data-page="cv" class="is-active" aria-labelledby="navCv">
+    <div class="wrap">
+      <header class="cv-header">
+        <!-- EDIT: role/title -->
+        <p class="role">Product Designer & Frontend Developer</p>
+        <!-- EDIT: your name -->
+        <h1>Avery Bloom</h1>
+        <!-- EDIT: short summary, 2-3 sentences -->
+        <p class="summary">
+          I design and build interfaces that hold up under real use — equal parts
+          visual craft and working code. Currently focused on design systems and
+          small, considered web products.
+        </p>
+        <div class="contact-row">
+          <!-- EDIT: contact details -->
+          <a href="mailto:hello@averybloom.com">hello@averybloom.com</a>
+          <span class="sep">·</span>
+          <a href="tel:+10000000000">+1 (000) 000-0000</a>
+          <span class="sep">·</span>
+          <span>Lisbon, Portugal</span>
+          <span class="sep">·</span>
+          <a href="#" target="_blank">linkedin.com/in/averybloom</a>
+          <span class="sep">·</span>
+          <a href="#" target="_blank">github.com/averybloom</a>
+        </div>
+      </header>
+
+      <div class="cv-body">
+        <div>
+          <div class="cv-block">
+            <h2>Experience</h2>
+            <div class="timeline">
+              <!-- EDIT: experience entries — copy a .tl-item block to add more -->
+              <div class="tl-item">
+                <p class="tl-date">2023 — Present</p>
+                <h3 class="tl-title">Senior Product Designer</h3>
+                <p class="tl-org">Nimbus Studio, Remote</p>
+                <p class="tl-desc">Lead design on the core platform, partnering directly with engineering to ship a unified component library used across four products.</p>
+              </div>
+              <div class="tl-item">
+                <p class="tl-date">2020 — 2023</p>
+                <h3 class="tl-title">Product Designer</h3>
+                <p class="tl-org">Heron & Co.</p>
+                <p class="tl-desc">Owned end-to-end design for a B2B analytics dashboard, from research through to shipped React components.</p>
+              </div>
+              <div class="tl-item">
+                <p class="tl-date">2018 — 2020</p>
+                <h3 class="tl-title">UI Designer</h3>
+                <p class="tl-org">Folio Agency</p>
+                <p class="tl-desc">Designed marketing sites and brand systems for a range of early-stage startup clients.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-block">
+            <h2>Education</h2>
+            <div class="timeline">
+              <!-- EDIT: education entries -->
+              <div class="tl-item">
+                <p class="tl-date">2014 — 2018</p>
+                <h3 class="tl-title">B.A. in Visual Communication</h3>
+                <p class="tl-org">University of the Arts</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="cv-block" style="margin-top:0;">
+            <h2>Skills</h2>
+            <div class="skill-group">
+              <h3>Languages</h3>
+              <div class="pill-row">
+                <!-- EDIT: skills lists -->
+                <span class="pill">JavaScript</span>
+                <span class="pill">TypeScript</span>
+                <span class="pill">Python</span>
+                <span class="pill">HTML / CSS</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <h3>Tools & Frameworks</h3>
+              <div class="pill-row">
+                <span class="pill">React</span>
+                <span class="pill">Figma</span>
+                <span class="pill">Node.js</span>
+                <span class="pill">Git</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <h3>Languages spoken</h3>
+              <div class="pill-row">
+                <span class="pill">English</span>
+                <span class="pill">Portuguese</span>
+              </div>
+            </div>
+            <!-- EDIT: link to an actual PDF if you have one -->
+            <a class="side-cta" href="#">Download PDF</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PORTFOLIO PAGE ===================== -->
+  <section id="portfolio" data-page="portfolio" aria-labelledby="navPortfolio">
+    <div class="wrap">
+      <header class="pf-header">
+        <p class="role">Selected Work</p>
+        <h1>Portfolio</h1>
+        <p>A working index of projects — browse as a gallery, switch to a list, or filter by the tools each one was built with.</p>
+      </header>
+
+      <div class="controls">
+        <div class="search-box">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" id="searchInput" placeholder="Search projects…" aria-label="Search projects">
+        </div>
+        <div class="tag-filters" id="tagFilters" role="group" aria-label="Filter by tag"></div>
+        <div class="view-toggle" role="group" aria-label="Switch view">
+          <button id="viewGallery" aria-pressed="true">Gallery</button>
+          <button id="viewList" aria-pressed="false">List</button>
+        </div>
+      </div>
+
+      <div class="pieces view-gallery" id="piecesContainer"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <!-- EDIT: name + year -->
+    <span>© 2026 Avery Bloom</span>
+    <span>Built with sage, serif italics, and a little gallery wall energy.</span>
+  </div>
+</footer>
+
+<script>
+  /* ===================== PROJECT DATA =====================
+     EDIT: add, remove, or change projects here. Every field
+     below is required except `tags`, which can be any length.
+     Tags double as the filter chips above — no extra wiring
+     needed when you add a new one. `c1` / `c2` are just two
+     hex colors used to tint the placeholder thumbnail.
+  ========================================================== */
+  const projects = [
+    {
+      title: "Tidewater Dashboard",
+      date: "2024",
+      description: "An analytics dashboard for coastal logistics teams, rebuilt around a real-time data pipeline and a component library shared across three internal tools.",
+      tags: ["React", "TypeScript", "D3.js"],
+      c1: "#6E7F5C", c2: "#D6DEC6"
+    },
+    {
+      title: "Folia",
+      date: "2023",
+      description: "A plant-care app concept exploring gentle notifications and a calmer visual language for daily habit tracking.",
+      tags: ["Figma", "Swift", "UI Design"],
+      c1: "#A6B493", c2: "#EDF0E5"
+    },
+    {
+      title: "Heron CMS",
+      date: "2023",
+      description: "Headless CMS admin interface with a custom block editor, built to make non-technical teams comfortable shipping content changes.",
+      tags: ["Vue", "Node.js", "PostgreSQL"],
+      c1: "#B08D4F", c2: "#D6DEC6"
+    },
+    {
+      title: "Quiet Index",
+      date: "2022",
+      description: "A minimal reading-list site with offline support and a typographic system built entirely around variable fonts.",
+      tags: ["JavaScript", "CSS", "Service Workers"],
+      c1: "#2B3424", c2: "#A6B493"
+    },
+    {
+      title: "Loom Studio Site",
+      date: "2022",
+      description: "Marketing site and brand system for a small textile studio, including a custom commerce flow for limited runs.",
+      tags: ["Next.js", "Shopify", "Figma"],
+      c1: "#D6DEC6", c2: "#6E7F5C"
+    },
+    {
+      title: "Pathwright",
+      date: "2021",
+      description: "Internal routing tool for field teams, built around an offline-first sync engine and a map-based interface.",
+      tags: ["Python", "React", "Mapbox"],
+      c1: "#6E7F5C", c2: "#2B3424"
+    }
+  ];
+
+  const piecesContainer = document.getElementById('piecesContainer');
+  const tagFiltersEl     = document.getElementById('tagFilters');
+  const searchInput      = document.getElementById('searchInput');
+  const viewGalleryBtn   = document.getElementById('viewGallery');
+  const viewListBtn      = document.getElementById('viewList');
+
+  const state = { activeTags: new Set(), query: '', view: 'gallery' };
+
+  function allTags(){
+    const set = new Set();
+    projects.forEach(p => p.tags.forEach(t => set.add(t)));
+    return Array.from(set).sort((a,b) => a.localeCompare(b));
+  }
+
+  function renderChips(){
+    const tags = allTags();
+    tagFiltersEl.innerHTML = '';
+
+    const allChip = document.createElement('button');
+    allChip.className = 'chip all';
+    allChip.textContent = 'All';
+    allChip.setAttribute('aria-pressed', state.activeTags.size === 0);
+    allChip.addEventListener('click', () => { state.activeTags.clear(); renderChips(); renderProjects(); });
+    tagFiltersEl.appendChild(allChip);
+
+    tags.forEach(tag => {
+      const chip = document.createElement('button');
+      chip.className = 'chip';
+      chip.textContent = tag;
+      chip.setAttribute('aria-pressed', state.activeTags.has(tag));
+      chip.addEventListener('click', () => {
+        state.activeTags.has(tag) ? state.activeTags.delete(tag) : state.activeTags.add(tag);
+        renderChips();
+        renderProjects();
+      });
+      tagFiltersEl.appendChild(chip);
+    });
+  }
+
+  function matchesFilters(project){
+    const tagOk = state.activeTags.size === 0 ||
+      project.tags.some(t => state.activeTags.has(t));
+    const haystack = (project.title + ' ' + project.description + ' ' + project.tags.join(' ')).toLowerCase();
+    const queryOk = state.query.trim() === '' || haystack.includes(state.query.trim().toLowerCase());
+    return tagOk && queryOk;
+  }
+
+  function renderProjects(){
+    const filtered = projects
+      .map((p, i) => ({ ...p, index: i + 1 }))
+      .filter(matchesFilters);
+
+    piecesContainer.className = `pieces view-${state.view}`;
+
+    if (filtered.length === 0){
+      piecesContainer.innerHTML = `<div class="empty-state">No pieces match — try clearing a filter or the search.</div>`;
+      return;
+    }
+
+    piecesContainer.innerHTML = filtered.map(p => `
+      <article class="piece">
+        <div class="art" style="--c1:${p.c1}; --c2:${p.c2};">
+          <span class="art-mark">${p.title.charAt(0)}</span>
+        </div>
+        <div class="placard">
+          <p class="placard-no">No. ${String(p.index).padStart(2,'0')}</p>
+          <h3 class="piece-title">${p.title} <span class="piece-date">— ${p.date}</span></h3>
+          <p class="piece-desc">${p.description}</p>
+          <ul class="piece-tags">
+            ${p.tags.map(t => `<li>${t}</li>`).join('')}
+          </ul>
+        </div>
+      </article>
+    `).join('');
+  }
+
+  searchInput.addEventListener('input', e => {
+    state.query = e.target.value;
+    renderProjects();
+  });
+
+  viewGalleryBtn.addEventListener('click', () => {
+    state.view = 'gallery';
+    viewGalleryBtn.setAttribute('aria-pressed', 'true');
+    viewListBtn.setAttribute('aria-pressed', 'false');
+    renderProjects();
+  });
+  viewListBtn.addEventListener('click', () => {
+    state.view = 'list';
+    viewListBtn.setAttribute('aria-pressed', 'true');
+    viewGalleryBtn.setAttribute('aria-pressed', 'false');
+    renderProjects();
+  });
+
+  /* ===================== PAGE NAV ===================== */
+  const navButtons = document.querySelectorAll('.tab-btn');
+  const pages = document.querySelectorAll('section[data-page]');
+
+  function showPage(name){
+    pages.forEach(s => s.classList.toggle('is-active', s.dataset.page === name));
+    navButtons.forEach(b => b.setAttribute('aria-selected', b.dataset.page === name));
+    history.replaceState(null, '', '#' + name);
+  }
+
+  navButtons.forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.page)));
+
+  const initial = location.hash.replace('#','');
+  showPage(initial === 'portfolio' ? 'portfolio' : 'cv');
+
+  renderChips();
+  renderProjects();
+</script>
+</body>
+</html>
