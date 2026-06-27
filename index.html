@@ -202,6 +202,11 @@
     position:absolute; inset:6px; display:flex; align-items:center; justify-content:center;
     font-family: var(--serif); font-style:italic; font-weight: 500; font-size: 2.6rem; color: rgba(255,255,255,0.85);
   }
+  .art video, .art iframe{
+    position: absolute; inset:6px;
+    width: calc(100% - 12px); height: calc(100% - 12px);
+    border:none; object-fit: cover; background:#000;
+  }
 
   .placard-no{ font-family: var(--mono); font-size: 0.7rem; color: var(--gold); letter-spacing: 0.08em; margin: 0 0 4px; }
   .piece-title{ font-family: var(--serif); font-weight: 500; font-size: 1.2rem; margin: 0 0 6px; color: var(--ink); }
@@ -439,6 +444,7 @@
       description: "Video di 3 minuti per presentarmi alla scuola e fare domande sul loro insegnamento.",
       tags: ["Video"],
       c1: "#6E7F5C", c2: "#D6DEC6"
+      video: "https://www.youtube.com/embed/VIDEO_ID" 
     },
     {
       title: "RETAKES L3 CAM épreuve 2",
@@ -446,6 +452,7 @@
       description: "Présentation du contenu des modules CAM, suivi d'une réflexion personnelle sur son intérêt.",
       tags: ["Video"],
       c1: "#A6B493", c2: "#EDF0E5"
+      video: "https://www.youtube.com/embed/VIDEO_ID" 
     }
   ];
 
@@ -511,7 +518,11 @@
     piecesContainer.innerHTML = filtered.map(p => `
       <article class="piece">
         <div class="art" style="--c1:${p.c1}; --c2:${p.c2};">
-          <span class="art-mark">${p.title.charAt(0)}</span>
+          ${p.video
+            ? (p.video.includes('youtube.com') || p.video.includes('youtu.be')
+                ? `<iframe src="${p.video}" allowfullscreen loading="lazy"></iframe>`
+                : `<video controls preload="metadata"><source src="${p.video}" type="video/mp4"></video>`)
+            : `<span class="art-mark">${p.title.charAt(0)}</span>`}
         </div>
         <div class="placard">
           <p class="placard-no">No. ${String(p.index).padStart(2,'0')}</p>
