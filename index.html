@@ -231,7 +231,7 @@
 
 <nav class="topnav">
   <div class="wrap">
-    <a href="#cv" class="brand">Paulima Aviles</a>
+    <a href="#cv" class="brand">Paulina Aviles</a>
     <div class="tabs" role="tablist" aria-label="Site sections">
       <button class="tab-btn" id="navCv" role="tab" aria-selected="true" data-page="cv">CV</button>
       <button class="tab-btn" id="navPortfolio" role="tab" aria-selected="false" data-page="portfolio">Portfolio</button>
@@ -259,14 +259,49 @@
           <span class="sep">·</span>
           <span>Toulouse, France</span></span>
           <span class="sep">·</span>
-          <a href="#" target="_blank">linkedin.com/in/pauaviles</a>
+          <a href="www.linkedin.com/in/pauaviles" target="_blank">linkedin.com/in/pauaviles</a>
           <span class="sep">·</span>
-          <a href="#" target="_blank">github.com/avfp</a>
+          <a href="www.github.com/avfp" target="_blank">github.com/avfp</a>
         </div>
       </header>
 
       <div class="cv-body">
         <div>
+
+          <div class="cv-block">
+            <h2>Education</h2>
+            <div class="timeline">
+              <div class="tl-item">
+                <p class="tl-date">2025 — Present</p>
+                <h3 class="tl-title">COMPUTER SCIENCE AND TELECOMMUNICATIONS</h3>
+                <p class="tl-org">ENSEEIHT - Toulouse INP</p>
+                <p class="tl-desc">Currently in my first year of my engineering degree.</p>
+              </div>
+              <div class="tl-item">
+                <p class="tl-date">2023 — 2025</p>
+                <h3 class="tl-title">PRÉPA T²</h3>
+                <p class="tl-org">Toulouse INP</p>
+                <p class="tl-desc">Intensive Scientific Preparatory Programme for Engineering Studies (Prépa Scientifique) leading to a 5-year diploma in engineering.</p>
+              </div>
+              
+              <div class="timeline">
+              <div class="tl-item">
+                <p class="tl-date">2023</p>
+                <h3 class="tl-title">GENERAL FRENCH BACCALAUREATE</h3>
+                <p class="tl-org">French-Honduran High School</p>
+                <p class="tl-desc">French High School Diploma with a focus on Mathematics, Physics-Chemistry, and Advanced Mathematics. Graduated with High Honors.</p>
+              </div>
+              <div class="timeline">
+              <div class="tl-item">
+                <p class="tl-date">2022</p>
+                <h3 class="tl-title">HONDURAN HIGH SCHOOL DIPLOMA</h3>
+                <p class="tl-org">French-Honduran High School</p>
+                <p class="tl-desc">Honduran High School Diploma in Sciences and Humanities.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
           <div class="cv-block">
             <h2>Experience</h2>
             <div class="timeline">
@@ -291,23 +326,7 @@
             </div>
           </div>
 
-          <div class="cv-block">
-            <h2>Education</h2>
-            <div class="timeline">
-              <div class="tl-item">
-                <p class="tl-date">2025 — Present</p>
-                <h3 class="tl-title">Computer Engineering</h3>
-                <p class="tl-org">ENSEEIHT</p>
-              </div>
-              <div class="tl-item">
-                <p class="tl-date">2023 — 2025</p>
-                <h3 class="tl-title">Computer Engineering</h3>
-                <p class="tl-org">Prépa T2 - Toulouse INP</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        
         <aside>
           <div class="cv-block" style="margin-top:0;">
             <h2>Skills</h2>
@@ -542,10 +561,11 @@
   navButtons.forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.page)));
 
   const initial = location.hash.replace('#','');
-  showPage(initial === 'portfolio' ? 'portfolio' : 'cv');
+  showPage(initial === 'portfolio' ? 'portfolio': 'cv');
 
   renderChips();
   renderProjects();
 </script>
 </body>
 </html>
+
